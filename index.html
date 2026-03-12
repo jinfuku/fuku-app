@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>福库心理 - 身心同调 APP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            max-width: 420px;
+            margin: 0 auto;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* 顶部导航栏 */
+        header {
+            background: linear-gradient(135deg, #00c853 0%, #2196f3 100%);
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-size: 20px;
+            text-align: center;
+        }
+
+        /* 分类导航 */
+        .category-nav {
+            display: flex;
+            overflow-x: auto;
+            background: white;
+            padding: 10px;
+            gap: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 50px;
+            z-index: 99;
+        }
+
+        .category-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-btn {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+            color: #333;
+        }
+
+        .category-btn.active {
+            background: #00c853;
+            color: white;
+        }
+
+        .category-btn:hover {
+            background: #2196f3;
+            color: white;
+        }
+
+        /* 主要内容区域 */
+        main {
+            padding: 15px;
+        }
+
+        /* 文章卡片 */
+        .article-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .article-category {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #2196f3;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .premium-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .article-title {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .article-summary {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .article-date {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* 底部导航栏 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #999;
+            text-decoration: none;
+            font-size: 12px;
+            flex: 1;
+        }
+
+        .nav-item.active {
+            color: #00c853;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* 搜索框 */
+        .search-box {
+            padding: 15px;
+            background: white;
+            margin-bottom: 10px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #00c853;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 15px;
+        }
+
+        /* 欢迎横幅 */
+        .welcome-banner {
+            background: linear-gradient(135deg, #00c853 0%, #2196f3 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .welcome-banner h2 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .welcome-banner p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* 功能按钮 */
+        .feature-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .feature-btn:hover {
+            transform: scale(1.02);
+        }
+
+        .feature-btn.primary {
+            background: linear-gradient(135deg, #00c853 0%, #2196f3 100%);
+            color: white;
+        }
+
+        .feature-btn.secondary {
+            background: white;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        /* 隐藏滚动条 */
+        body {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        body::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header>
+        <h1>🌱 福库心理</h1>
+    </header>
+
+    <!-- 分类导航 -->
+    <div class="category-nav">
+        <button class="category-btn active" onclick="filterCategory('all')">全部</button>
+        <button class="category-btn" onclick="filterCategory('身')">身</button>
+        <button class="category-btn" onclick="filterCategory('心')">心</button>
+        <button class="category-btn" onclick="filterCategory('神')">神</button>
+        <button class="category-btn" onclick="filterCategory('伴侣关系')">伴侣</button>
+        <button class="category-btn" onclick="filterCategory('AI')">AI</button>
+    </div>
+
+    <!-- 搜索框 -->
+    <div class="search-box">
+        <input type="text" class="search-input" placeholder="搜索文章..." id="searchInput" oninput="searchArticles()">
+    </div>
+
+    <!-- 主要内容区域 -->
+    <main id="mainContent">
+        <!-- 欢迎横幅 -->
+        <div class="welcome-banner">
+            <h2>欢迎来到福库心理</h2>
+            <p>身心神同调，开启生命的新可能</p>
+        </div>
+
+        <!-- 功能按钮 -->
+        <button class="feature-btn primary" onclick="openWebsite()">
+            🌐 访问完整网站
+        </button>
+
+        <button class="feature-btn secondary" onclick="showAbout()">
+            ℹ️ 关于福库老师
+        </button>
+
+        <!-- 文章列表 -->
+        <div id="articleList">
+            <!-- 文章将通过 JavaScript 动态加载 -->
+        </div>
+    </main>
+
+    <!-- 底部导航栏 -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active" onclick="showPage('home')">
+            <div class="nav-icon">🏠</div>
+            <div>首页</div>
+        </a>
+        <a href="#" class="nav-item" onclick="showPage('categories')">
+            <div class="nav-icon">📚</div>
+            <div>分类</div>
+        </a>
+        <a href="#" class="nav-item" onclick="showPage('search')">
+            <div class="nav-icon">🔍</div>
+            <div>搜索</div>
+        </a>
+        <a href="#" class="nav-item" onclick="openWebsite()">
+            <div class="nav-icon">🌐</div>
+            <div>网站</div>
+        </a>
+    </nav>
+
+    <script>
+        // 文章数据
+        const articles = [
+            {
+                id: 1,
+                title: '推拿疗愈身体的力量',
+                category: '身',
+                summary: '推拿，作为中国传统医学的重要组成部分，不仅是治疗身体疾病的方法，更是一种身心同调的疗愈方式。',
+                date: '2024-01-15',
+                isPremium: false
+            },
+            {
+                id: 2,
+                title: '艾灸的温暖疗愈',
+                category: '身',
+                summary: '艾灸通过艾草燃烧产生的热力和药力，作用于人体的经络和穴位，达到温通经络、调和气血、扶正祛邪的作用。',
+                date: '2024-01-20',
+                isPremium: false
+            },
+            {
+                id: 3,
+                title: '存在主义心理治疗的基本概念',
+                category: '心',
+                summary: '存在主义心理治疗，由欧文·亚隆系统阐述，是现代心理咨询的重要流派之一。',
+                date: '2024-01-16',
+                isPremium: false
+            },
+            {
+                id: 4,
+                title: '深度心理治疗案例分享',
+                category: '心',
+                summary: '通过这个真实的深度心理治疗案例，展示心理咨询如何在帮助个体实现身心神同调的过程中发挥重要作用。（付费文章）',
+                date: '2024-03-12',
+                isPremium: true,
+                price: '99元'
+            },
+            {
+                id: 5,
+                title: '意识与生命整合的探索',
+                category: '神',
+                summary: '意识与生命整合，是身心神同调理论中的核心概念。内勒斯提供了理解和发展意识的框架。',
+                date: '2024-01-17',
+                isPremium: false
+            },
+            {
+                id: 6,
+                title: '伴侣关系中的沟通艺术',
+                category: '伴侣关系',
+                summary: '良好的沟通是维系健康伴侣关系的关键，它不仅仅是信息的传递，更是情感的交流和理解的深化。',
+                date: '2024-01-18',
+                isPremium: false
+            },
+            {
+                id: 7,
+                title: 'AI在心理咨询中的辅助作用',
+                category: 'AI',
+                summary: '人工智能正在改变各行各业，心理咨询领域也不例外。AI在辅助咨询方面展现出巨大潜力。',
+                date: '2024-01-19',
+                isPremium: false
+            }
+        ];
+
+        // 当前选中的分类
+        let currentCategory = 'all';
+
+        // 渲染文章列表
+        function renderArticles(filteredArticles) {
+            const articleList = document.getElementById('articleList');
+
+            if (filteredArticles.length === 0) {
+                articleList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <p>暂无相关文章</p>
+                    </div>
+                `;
+                return;
+            }
+
+            articleList.innerHTML = filteredArticles.map(article => `
+                <div class="article-card" onclick="openArticle(${article.id})">
+                    <div class="article-category">${article.category}${article.isPremium ? '<span class="premium-badge">🔒 付费</span>' : ''}</div>
+                    <div class="article-title">${article.title}</div>
+                    <div class="article-summary">${article.summary}</div>
+                    <div class="article-date">${article.date}</div>
+                </div>
+            `).join('');
+        }
+
+        // 按分类筛选文章
+        function filterCategory(category) {
+            currentCategory = category;
+
+            // 更新按钮状态
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // 筛选文章
+            let filteredArticles = articles;
+            if (category !== 'all') {
+                filteredArticles = articles.filter(article => article.category === category);
+            }
+
+            // 如果有搜索关键词，再进行搜索
+            const searchKeyword = document.getElementById('searchInput').value.trim();
+            if (searchKeyword) {
+                filteredArticles = filteredArticles.filter(article =>
+                    article.title.includes(searchKeyword) ||
+                    article.summary.includes(searchKeyword)
+                );
+            }
+
+            renderArticles(filteredArticles);
+        }
+
+        // 搜索文章
+        function searchArticles() {
+            const searchKeyword = document.getElementById('searchInput').value.trim();
+
+            let filteredArticles = articles;
+            if (currentCategory !== 'all') {
+                filteredArticles = filteredArticles.filter(article => article.category === currentCategory);
+            }
+
+            if (searchKeyword) {
+                filteredArticles = filteredArticles.filter(article =>
+                    article.title.includes(searchKeyword) ||
+                    article.summary.includes(searchKeyword)
+                );
+            }
+
+            renderArticles(filteredArticles);
+        }
+
+        // 打开文章详情
+        function openArticle(id) {
+            const article = articles.find(a => a.id === id);
+            if (article) {
+                if (article.isPremium) {
+                    // 付费文章
+                    showPremiumDialog(article);
+                } else {
+                    // 免费文章
+                    alert('文章：' + article.title + '\n\n' + article.summary + '\n\n提示：完整功能需要访问网站查看');
+                }
+            }
+        }
+
+        // 显示付费文章对话框
+        function showPremiumDialog(article) {
+            const message = `🔒 付费文章\n\n${article.title}\n\n这是一篇付费文章，需要支付 ${article.price} 才能阅读完整内容。\n\n如果您已经购买了访问权限，请联系福库老师获取密码。\n\n提示：完整功能需要访问网站查看`;
+            alert(message);
+        }
+
+        // 打开完整网站
+        function openWebsite() {
+            // 这里替换为实际的网站地址
+            const websiteUrl = 'https://your-username.github.io/fuku-psychology-website';
+            window.open(websiteUrl, '_blank');
+        }
+
+        // 显示关于页面
+        function showAbout() {
+            alert('福库老师\n\n身心神同调内容架构师\n\n专业领域：\n• 身：推拿、艾灸\n• 心：心理咨询\n• 神：意识、生命整合\n• 伴侣关系\n• AI应用\n\n理念：身心神同调，开启生命的新可能');
+        }
+
+        // 显示页面
+        function showPage(page) {
+            // 更新导航栏状态
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+
+            // 根据页面执行相应操作
+            switch(page) {
+                case 'home':
+                    // 回到首页
+                    currentCategory = 'all';
+                    document.querySelectorAll('.category-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    document.querySelector('.category-btn').classList.add('active');
+                    renderArticles(articles);
+                    break;
+                case 'categories':
+                    // 分类页面
+                    alert('分类功能：\n\n请使用顶部的分类按钮选择您感兴趣的内容类别');
+                    break;
+                case 'search':
+                    // 搜索页面
+                    document.getElementById('searchInput').focus();
+                    break;
+                case 'website':
+                    // 网站
+                    openWebsite();
+                    break;
+            }
+        }
+
+        // 初始化：渲染所有文章
+        renderArticles(articles);
+    </script>
+</body>
+</html>
