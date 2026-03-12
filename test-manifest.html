@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Manifest路径测试</title>
+</head>
+<body>
+    <h1>Manifest路径测试</h1>
+    
+    <h2>测试结果：</h2>
+    <div id="results"></div>
+    
+    <script>
+        const results = document.getElementById('results');
+        const pathsToTest = [
+            '/manifest.json',
+            './manifest.json',
+            'manifest.json',
+            '/fuku-app/manifest.json',
+            './fuku-app/manifest.json'
+        ];
+        
+        let html = '<ul>';
+        pathsToTest.forEach(path => {
+            html += `<li>测试路径: <strong>${path}</strong> - `;
+            fetch(path)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error(`HTTP ${response.status}`);
+                })
+                .then(manifest => {
+                    html += `✅ 成功 - ${manifest.name}`;
+                    results.innerHTML = html;
+                })
+                .catch(error => {
+                    html += `❌ 失败 - ${error.message}`;
+                    results.innerHTML = html;
+                });
+        });
+        html += '</ul>';
+        results.innerHTML = html;
+    </script>
+</body>
+</html>
