@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>福库心理 - 身心同调 APP</title>
+    
+    <!-- PWA配置 -->
+    <meta name="theme-color" content="#00c853">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="福库心理">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+    
     <style>
         * {
             margin: 0;
@@ -483,7 +493,7 @@
         // 打开完整网站
         function openWebsite() {
             // 这里替换为实际的网站地址
-            const websiteUrl = 'https://your-username.github.io/fuku-psychology-website';
+            const websiteUrl = 'https://jinfuku.github.io/fukuxinli/';
             window.open(websiteUrl, '_blank');
         }
 
@@ -528,6 +538,66 @@
 
         // 初始化：渲染所有文章
         renderArticles(articles);
+        
+        // PWA安装提示
+        let deferredPrompt;
+        const installBtn = document.createElement('button');
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // 显示安装提示
+            installBtn.textContent = '📱 安装到主屏幕';
+            installBtn.style.cssText = `
+                position: fixed;
+                bottom: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 12px 24px;
+                background: linear-gradient(135deg, #00c853 0%, #2196f3 100%);
+                color: white;
+                border: none;
+                border-radius: 25px;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                z-index: 1000;
+                animation: pulse 2s infinite;
+            `;
+            
+            document.body.appendChild(installBtn);
+            
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    console.log(`用户响应: ${outcome}`);
+                    deferredPrompt = null;
+                    installBtn.remove();
+                }
+            });
+        });
+        
+        // 检测已安装
+        window.addEventListener('appinstalled', () => {
+            installBtn.remove();
+            console.log('PWA已安装');
+        });
+        
+        // 注册Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker注册成功:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker注册失败:', error);
+                    });
+            });
+        }
     </script>
 </body>
 </html>
