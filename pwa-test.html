@@ -33,32 +33,27 @@
         }
         
         // 检查Manifest
-        const manifestLink = document.querySelector('link[rel="manifest"]');
-        if (manifestLink) {
-            fetch(manifestLink.href)
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                    throw new Error('无法加载manifest');
-                })
-                .then(manifest => {
-                    document.getElementById('manifest-status').innerHTML = 
-                        '✅ Manifest加载成功<br>' +
-                        '名称: ' + manifest.name + '<br>' +
-                        '图标数量: ' + manifest.icons.length;
-                    document.getElementById('manifest-status').style.color = 'green';
-                })
-                .catch(error => {
-                    document.getElementById('manifest-status').innerHTML = 
-                        '❌ ' + error.message;
-                    document.getElementById('manifest-status').style.color = 'red';
-                });
-        } else {
-            document.getElementById('manifest-status').innerHTML = 
-                '❌ 未找到manifest链接';
-            document.getElementById('manifest-status').style.color = 'red';
-        }
+        const manifestUrl = window.location.origin + '/manifest.json';
+        fetch(manifestUrl)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('HTTP ' + response.status + ': 无法加载manifest');
+            })
+            .then(manifest => {
+                document.getElementById('manifest-status').innerHTML =
+                    '✅ Manifest加载成功<br>' +
+                    '路径: ' + manifestUrl + '<br>' +
+                    '名称: ' + manifest.name + '<br>' +
+                    '图标数量: ' + manifest.icons.length;
+                document.getElementById('manifest-status').style.color = 'green';
+            })
+            .catch(error => {
+                document.getElementById('manifest-status').innerHTML =
+                    '❌ ' + error.message;
+                document.getElementById('manifest-status').style.color = 'red';
+            });
         
         // 检查Service Worker
         if ('serviceWorker' in navigator) {
