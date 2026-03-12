@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>PWA检测工具</title>
+</head>
+<body>
+    <h1>PWA配置检测</h1>
+    
+    <h2>1. Manifest检查</h2>
+    <div id="manifest-status">检测中...</div>
+    
+    <h2>2. Service Worker检查</h2>
+    <div id="sw-status">检测中...</div>
+    
+    <h2>3. HTTPS检查</h2>
+    <div id="https-status">检测中...</div>
+    
+    <h2>4. 当前URL</h2>
+    <div id="current-url"></div>
+    
+    <script>
+        // 检查当前URL
+        document.getElementById('current-url').textContent = window.location.href;
+        
+        // 检查HTTPS
+        if (window.location.protocol === 'https:') {
+            document.getElementById('https-status').innerHTML = '✅ HTTPS已启用';
+            document.getElementById('https-status').style.color = 'green';
+        } else {
+            document.getElementById('https-status').innerHTML = '❌ 未使用HTTPS';
+            document.getElementById('https-status').style.color = 'red';
+        }
+        
+        // 检查Manifest
+        const manifestLink = document.querySelector('link[rel="manifest"]');
+        if (manifestLink) {
+            fetch(manifestLink.href)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('无法加载manifest');
+                })
+                .then(manifest => {
+                    document.getElementById('manifest-status').innerHTML = 
+                        '✅ Manifest加载成功<br>' +
+                        '名称: ' + manifest.name + '<br>' +
+                        '图标数量: ' + manifest.icons.length;
+                    document.getElementById('manifest-status').style.color = 'green';
+                })
+                .catch(error => {
+                    document.getElementById('manifest-status').innerHTML = 
+                        '❌ ' + error.message;
+                    document.getElementById('manifest-status').style.color = 'red';
+                });
+        } else {
+            document.getElementById('manifest-status').innerHTML = 
+                '❌ 未找到manifest链接';
+            document.getElementById('manifest-status').style.color = 'red';
+        }
+        
+        // 检查Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistration()
+                .then(registration => {
+                    if (registration) {
+                        document.getElementById('sw-status').innerHTML = 
+                            '✅ Service Worker已注册<br>' +
+                            '状态: ' + registration.active.state;
+                        document.getElementById('sw-status').style.color = 'green';
+                    } else {
+                        document.getElementById('sw-status').innerHTML = 
+                            '❌ Service Worker未注册';
+                        document.getElementById('sw-status').style.color = 'red';
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('sw-status').innerHTML = 
+                        '❌ ' + error.message;
+                    document.getElementById('sw-status').style.color = 'red';
+                });
+        } else {
+            document.getElementById('sw-status').innerHTML = 
+                '❌ 浏览器不支持Service Worker';
+            document.getElementById('sw-status').style.color = 'red';
+        }
+    </script>
+</body>
+</html>
