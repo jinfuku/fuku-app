@@ -42,6 +42,23 @@
             z-index: 100;
         }
 
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .header-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .header-text {
+            text-align: left;
+        }
+
         header h1 {
             font-size: 22px;
             text-align: center;
@@ -306,7 +323,24 @@
 
         /* 响应式调整 */
         @media (max-width: 360px) {
-            header h1 {
+    
+        .header-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .header-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .header-text {
+            text-align: left;
+        }
+
+        header h1 {
                 font-size: 18px;
             }
             
@@ -319,8 +353,13 @@
 <body>
     <!-- 顶部导航 -->
     <header>
-        <h1>福库身心同调</h1>
-        <div class="tagline">推拿艾灸 · 心理咨询 · 系统排列 · 生命整合</div>
+        <div class="header-brand">
+        <img src="images/fuku-logo.png" alt="福库心理Logo" class="header-logo">
+        <div class="header-text">
+            <h1>福库身心同调</h1>
+            <div class="tagline">推拿艾灸 · 心理咨询 · 系统排列 · 生命整合</div>
+        </div>
+        </div>
     </header>
 
     <!-- 分类导航 -->
@@ -466,11 +505,11 @@
                     <div class="icon">⚡</div>
                     <span>今日头条</span>
                 </a>
-                <a href="#" class="social-item">
+                <a href="https://weibo.com/u/1285229442" target="_blank" class="social-item">
                     <div class="icon">W</div>
                     <span>微博</span>
                 </a>
-                <a href="#" class="social-item">
+                <a href="https://wx.zsxq.com/group/51115811242224" target="_blank" class="social-item">
                     <div class="icon">★</div>
                     <span>知识星球</span>
                 </a>
@@ -544,7 +583,19 @@
                 <div class="comment-header">
                     <span class="comment-author">${name}</span>
                     <span class="comment-time">${dateStr}</span>
-                </div>
+    <a href="https://www.zhihu.com/people/jinfuku8" target="_blank" class="social-item">
+                    <div class="icon">知</div>
+                    <span>知乎</span>
+                </a>
+                <a href="#" class="social-item" onclick="alert('请在ima APP中搜索：福库心理'); return false;">
+                    <div class="icon">i</div>
+                    <span>ima知识号</span>
+                </a>
+                <a href="#" class="social-item" onclick="alert('请在get笔记APP中搜索：福库'); return false;">
+                    <div class="icon">G</div>
+                    <span>get笔记</span>
+                </a>
+            </div>
                 <div class="comment-body">${message}</div>
             `;
 
