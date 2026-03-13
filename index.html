@@ -268,6 +268,75 @@
         body::-webkit-scrollbar {
             display: none;
         }
+
+        /* 文章标签样式 */
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 8px 0;
+        }
+
+        .article-tags .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background: linear-gradient(135deg, #00c853, #2196f3);
+            color: white;
+            border-radius: 10px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        /* 文章元信息 */
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .article-price {
+            color: #ff5722;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .series-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: linear-gradient(135deg, #9c27b0, #673ab7);
+            color: white;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* 文章操作按钮 */
+        .article-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 8px;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background: #00c853;
+            color: white;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -343,7 +412,11 @@
                 category: '身',
                 summary: '推拿，作为中国传统医学的重要组成部分，不仅是治疗身体疾病的方法，更是一种身心同调的疗愈方式。',
                 date: '2024-01-15',
-                isPremium: false
+                isPremium: false,
+                price: '9.9元',
+                tags: ['推拿', '中医', '疗愈', '身体'],
+                series: '中医理疗系列',
+                url: 'https://jinfuku.github.io/fukuxinli/body/%E6%8E%A8%E6%8B%BF%E7%96%97%E6%84%88%E8%BA%AB%E4%BD%93%E7%9A%84%E5%8A%9B%E9%87%8F/'
             },
             {
                 id: 2,
@@ -351,7 +424,11 @@
                 category: '身',
                 summary: '艾灸通过艾草燃烧产生的热力和药力，作用于人体的经络和穴位，达到温通经络、调和气血、扶正祛邪的作用。',
                 date: '2024-01-20',
-                isPremium: false
+                isPremium: false,
+                price: '9.9元',
+                tags: ['艾灸', '中医', '疗愈', '身体'],
+                series: '中医理疗系列',
+                url: 'https://jinfuku.github.io/fukuxinli/body/%E8%89%BE%E7%81%B8%E7%9A%84%E6%B8%A9%E6%9A%96%E7%96%97%E6%84%88/'
             },
             {
                 id: 3,
@@ -359,16 +436,24 @@
                 category: '心',
                 summary: '存在主义心理治疗，由欧文·亚隆系统阐述，是现代心理咨询的重要流派之一。',
                 date: '2024-01-16',
-                isPremium: false
+                isPremium: false,
+                price: '9.9元',
+                tags: ['存在主义', '心理咨询', '欧文·亚隆'],
+                series: '心理咨询系列',
+                url: 'https://jinfuku.github.io/fukuxinli/mind/%E5%AD%98%E5%9C%A8%E4%B8%BB%E4%B9%89%E5%BF%83%E7%90%86%E6%B2%BB%E7%96%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/'
             },
             {
                 id: 4,
                 title: '深度心理治疗案例分享',
                 category: '心',
-                summary: '通过这个真实的深度心理治疗案例，展示心理咨询如何在帮助个体实现身心神同调的过程中发挥重要作用。（付费文章）',
+                summary: '通过这个真实的深度心理治疗案例，展示心理咨询如何在帮助个体实现身心神同调的过程中发挥重要作用。（系列合集）',
                 date: '2024-03-12',
                 isPremium: true,
-                price: '99元'
+                price: '99元',
+                tags: ['深度心理治疗', '案例', '心理咨询', '系统排列'],
+                series: '心理咨询系列',
+                isSeries: true,
+                url: 'https://jinfuku.github.io/fukuxinli/mind/%E6%B7%B1%E5%BA%A6%E5%BF%83%E7%90%86%E6%B2%BB%E7%96%97%E6%A1%88%E4%BE%8B%E5%88%86%E4%BA%AB/'
             },
             {
                 id: 5,
@@ -377,16 +462,22 @@
                 summary: '意识与生命整合，是身心神同调理论中的核心概念。威尔菲德·内勒斯提供了理解和发展意识的框架。',
                 date: '2024-01-17',
                 isPremium: false,
+                price: '9.9元',
+                tags: ['意识', '生命整合', '威尔菲德·内勒斯', '心灵'],
+                series: '内勒斯理论系列',
                 url: 'https://jinfuku.github.io/fukuxinli/spirit/%E6%84%8F%E8%AF%86%E4%B8%8E%E7%94%9F%E5%91%BD%E6%95%B4%E5%90%88%E7%9A%84%E6%8E%A2%E7%B4%A2/'
             },
             {
                 id: 6,
                 title: '威尔菲德·内勒斯核心概念与术语翻译对照表',
                 category: '神',
-                summary: '整合了威尔菲德·内勒斯、马尔特·内勒斯和托马斯·盖斯内著作中最核心的哲学概念与术语，为理解内勒斯学派思想体系提供根基。（付费文章）',
+                summary: '整合了威尔菲德·内勒斯、马尔特·内勒斯和托马斯·盖斯内著作中最核心的哲学概念与术语，为理解内勒斯学派思想体系提供根基。（系列合集）',
                 date: '2026-03-13',
                 isPremium: true,
-                price: '199元',
+                price: '99元',
+                tags: ['威尔菲德·内勒斯', '概念术语', '翻译', '系统排列'],
+                series: '内勒斯理论系列',
+                isSeries: true,
                 url: 'https://jinfuku.github.io/fukuxinli/spirit/%E5%A8%81%E5%B0%94%E8%8F%B2%E5%BE%B7%E5%86%85%E5%8B%92%E6%96%AF%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E6%9C%AF%E8%AF%AD%E7%BF%BB%E8%AF%91%E5%AF%B9%E7%85%A7%E8%A1%A8/'
             },
             {
@@ -395,7 +486,11 @@
                 category: '伴侣关系',
                 summary: '良好的沟通是维系健康伴侣关系的关键，它不仅仅是信息的传递，更是情感的交流和理解的深化。',
                 date: '2024-01-18',
-                isPremium: false
+                isPremium: false,
+                price: '9.9元',
+                tags: ['伴侣关系', '沟通', '心理学', '关系'],
+                series: '关系系列',
+                url: 'https://jinfuku.github.io/fukuxinli/partnership/%E4%BC%B4%E4%BE%A3%E5%85%B3%E7%B3%BB%E4%B8%AD%E7%9A%84%E6%B2%9F%E9%80%9A%E8%89%BA%E6%9C%AF/'
             },
             {
                 id: 8,
@@ -403,7 +498,11 @@
                 category: 'AI',
                 summary: '人工智能正在改变各行各业，心理咨询领域也不例外。AI在辅助咨询方面展现出巨大潜力。',
                 date: '2024-01-19',
-                isPremium: false
+                isPremium: false,
+                price: '9.9元',
+                tags: ['AI', '人工智能', '心理咨询', '科技'],
+                series: '科技与心理系列',
+                url: 'https://jinfuku.github.io/fukuxinli/ai/ai%E5%9C%A8%E5%BF%83%E7%90%86%E5%92%A8%E8%AF%A2%E4%B8%AD%E7%9A%84%E8%BE%85%E5%8A%A9%E4%BD%9C%E7%94%A8/'
             }
         ];
 
@@ -429,7 +528,18 @@
                     <div class="article-category">${article.category}${article.isPremium ? '<span class="premium-badge">🔒 付费</span>' : ''}</div>
                     <div class="article-title">${article.title}</div>
                     <div class="article-summary">${article.summary}</div>
-                    <div class="article-date">${article.date}</div>
+                    <div class="article-tags">
+                        ${article.tags ? article.tags.map(tag => `<span class="tag" onclick="event.stopPropagation(); filterByTag('${tag}')">${tag}</span>`).join('') : ''}
+                    </div>
+                    <div class="article-meta">
+                        <span class="article-date">${article.date}</span>
+                        <span class="article-price">${article.price || ''}</span>
+                        ${article.isSeries ? '<span class="series-badge">📦 系列</span>' : ''}
+                    </div>
+                    <div class="article-actions">
+                        <button class="action-btn" onclick="event.stopPropagation(); shareArticle(articles.find(a => a.id === ${article.id}))">📤 分享</button>
+                        <button class="action-btn" onclick="event.stopPropagation(); showRelatedArticles(articles.find(a => a.id === ${article.id}))">📚 相关</button>
+                    </div>
                 </div>
             `).join('');
         }
@@ -518,6 +628,94 @@
             // 这里替换为实际的网站地址
             const websiteUrl = 'https://jinfuku.github.io/fukuxinli/';
             window.open(websiteUrl, '_blank');
+        }
+
+        // 分享文章
+        function shareArticle(article) {
+            const shareText = `福库心理 - ${article.title}\n\n${article.summary}\n\n价格：${article.price || '免费'}\n\n阅读链接：${article.url || 'https://jinfuku.github.io/fukuxinli/'}`;
+
+            // 尝试使用Web Share API
+            if (navigator.share) {
+                navigator.share({
+                    title: article.title,
+                    text: shareText,
+                    url: article.url || 'https://jinfuku.github.io/fukuxinli/'
+                }).catch(console.error);
+            } else {
+                // 回退到复制链接
+                if (article.url) {
+                    copyToClipboard(article.url);
+                    alert('链接已复制到剪贴板！');
+                } else {
+                    alert('请手动分享文章：' + shareText);
+                }
+            }
+        }
+
+        // 复制到剪贴板
+        function copyToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+        }
+
+        // 显示相关文章推荐
+        function showRelatedArticles(article) {
+            let relatedArticles = [];
+
+            // 1. 同系列文章
+            if (article.series) {
+                articles.forEach(a => {
+                    if (a.id !== article.id && a.series === article.series) {
+                        relatedArticles.push({...a, reason: '同系列'});
+                    }
+                });
+            }
+
+            // 2. 同标签文章
+            if (article.tags) {
+                article.tags.forEach(tag => {
+                    articles.forEach(a => {
+                        if (a.id !== article.id && a.tags && a.tags.includes(tag)) {
+                            if (!relatedArticles.find(r => r.id === a.id)) {
+                                relatedArticles.push({...a, reason: '同标签'});
+                            }
+                        }
+                    });
+                });
+            }
+
+            // 3. 同分类文章
+            articles.forEach(a => {
+                if (a.id !== article.id && a.category === article.category) {
+                    if (!relatedArticles.find(r => r.id === a.id)) {
+                        relatedArticles.push({...a, reason: '同分类'});
+                    }
+                }
+            });
+
+            // 限制数量
+            relatedArticles = relatedArticles.slice(0, 5);
+
+            if (relatedArticles.length === 0) {
+                alert('暂无相关文章');
+                return;
+            }
+
+            const relatedText = relatedArticles.map((a, index) =>
+                `${index + 1}. ${a.title}\n   ${a.reason} | ${a.price}`
+            ).join('\n\n');
+
+            alert(`相关文章推荐：\n\n${relatedText}`);
+        }
+
+        // 按标签筛选文章
+        function filterByTag(tag) {
+            document.getElementById('searchInput').value = tag;
+            searchArticles();
         }
 
         // 显示关于页面
