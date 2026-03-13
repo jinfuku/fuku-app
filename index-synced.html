@@ -335,76 +335,17 @@
     </nav>
 
     <script>
-        // 文章数据
-        const articles = [
+                const articles = [
             {
-                id: 1,
-                title: '推拿疗愈身体的力量',
-                category: '身',
-                summary: '推拿，作为中国传统医学的重要组成部分，不仅是治疗身体疾病的方法，更是一种身心同调的疗愈方式。',
-                date: '2024-01-15',
-                isPremium: false
-            },
-            {
-                id: 2,
-                title: '艾灸的温暖疗愈',
-                category: '身',
-                summary: '艾灸通过艾草燃烧产生的热力和药力，作用于人体的经络和穴位，达到温通经络、调和气血、扶正祛邪的作用。',
-                date: '2024-01-20',
-                isPremium: false
-            },
-            {
-                id: 3,
-                title: '存在主义心理治疗的基本概念',
-                category: '心',
-                summary: '存在主义心理治疗，由欧文·亚隆系统阐述，是现代心理咨询的重要流派之一。',
-                date: '2024-01-16',
-                isPremium: false
-            },
-            {
-                id: 4,
-                title: '深度心理治疗案例分享',
-                category: '心',
-                summary: '通过这个真实的深度心理治疗案例，展示心理咨询如何在帮助个体实现身心神同调的过程中发挥重要作用。（付费文章）',
-                date: '2024-03-12',
-                isPremium: true,
-                price: '99元'
-            },
-            {
-                id: 5,
-                title: '意识与生命整合的探索',
+                id: 1773383516,
+                title: '威尔菲德·内勒斯、马尔特·内勒斯、托马斯·盖斯内核⼼概念与术语翻译对照表',
                 category: '神',
-                summary: '意识与生命整合，是身心神同调理论中的核心概念。威尔菲德·内勒斯提供了理解和发展意识的框架。',
-                date: '2024-01-17',
-                isPremium: false,
-                url: 'https://jinfuku.github.io/fukuxinli/spirit/%E6%84%8F%E8%AF%86%E4%B8%8E%E7%94%9F%E5%91%BD%E6%95%B4%E5%90%88%E7%9A%84%E6%8E%A2%E7%B4%A2/'
-            },
-            {
-                id: 6,
-                title: '威尔菲德·内勒斯核心概念与术语翻译对照表',
-                category: '神',
-                summary: '整合了威尔菲德·内勒斯、马尔特·内勒斯和托马斯·盖斯内著作中最核心的哲学概念与术语，为理解内勒斯学派思想体系提供根基。（付费文章）',
+                summary: '⚠️ 重要说明',
                 date: '2026-03-13',
                 isPremium: true,
-                price: '199元',
-                url: 'https://jinfuku.github.io/fukuxinli/spirit/%E5%A8%81%E5%B0%94%E8%8F%B2%E5%BE%B7%E5%86%85%E5%8B%92%E6%96%AF%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E6%9C%AF%E8%AF%AD%E7%BF%BB%E8%AF%91%E5%AF%B9%E7%85%A7%E8%A1%A8/'
+                url: 'https://jinfuku.github.io/fukuxinli/content/spirit/威尔菲德内勒斯核心概念术语翻译对照表.md'
+                price: '199元'
             },
-            {
-                id: 7,
-                title: '伴侣关系中的沟通艺术',
-                category: '伴侣关系',
-                summary: '良好的沟通是维系健康伴侣关系的关键，它不仅仅是信息的传递，更是情感的交流和理解的深化。',
-                date: '2024-01-18',
-                isPremium: false
-            },
-            {
-                id: 8,
-                title: 'AI在心理咨询中的辅助作用',
-                category: 'AI',
-                summary: '人工智能正在改变各行各业，心理咨询领域也不例外。AI在辅助咨询方面展现出巨大潜力。',
-                date: '2024-01-19',
-                isPremium: false
-            }
         ];
 
         // 当前选中的分类
@@ -492,25 +433,16 @@
                     // 付费文章
                     showPremiumDialog(article);
                 } else {
-                    // 免费文章，提示访问网站
-                    const confirmOpen = confirm(`文章：${article.title}\n\n${article.summary}\n\n\n点击"确定"访问完整网站阅读完整内容`);
-                    if (confirmOpen) {
-                        openWebsite();
-                    }
+                    // 免费文章
+                    alert('文章：' + article.title + '\n\n' + article.summary + '\n\n提示：完整功能需要访问网站查看');
                 }
             }
         }
 
         // 显示付费文章对话框
         function showPremiumDialog(article) {
-            const message = `🔒 付费文章\n\n${article.title}\n\n这是一篇付费文章，需要购买访问权限。\n\n价格：${article.price}\n\n如果您已经购买了访问权限，请联系福库老师获取密码。\n\n点击"确定"访问网站输入密码阅读`;
-            if (confirm(message)) {
-                if (article.url) {
-                    window.open(article.url, '_blank');
-                } else {
-                    openWebsite();
-                }
-            }
+            const message = `🔒 付费文章\n\n${article.title}\n\n这是一篇付费文章，需要支付 ${article.price} 才能阅读完整内容。\n\n如果您已经购买了访问权限，请联系福库老师获取密码。\n\n提示：完整功能需要访问网站查看`;
+            alert(message);
         }
 
         // 打开完整网站

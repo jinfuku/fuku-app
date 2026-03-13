@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>福库心理 - 身心同调 APP</title>
+    
+    <!-- PWA配置 -->
+    <meta name="theme-color" content="#00c853">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="福库心理">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="icons/icon-152x152.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            max-width: 420px;
+            margin: 0 auto;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* 顶部导航栏 */
+        header {
+            background: linear-gradient(135deg, #00c853 0%, #2196f3 100%);
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-size: 22px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        header .tagline {
+            font-size: 13px;
+            text-align: center;
+            margin-top: 5px;
+            opacity: 0.95;
+        }
+
+        /* 分类导航 */
+        .category-nav {
+            display: flex;
+            overflow-x: auto;
+            background: white;
+            padding: 12px;
+            gap: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 70px;
+            z-index: 99;
+        }
+
+        .category-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-btn {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, #00c853 0%, #009624 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 200, 83, 0.3);
+        }
+
+        /* 主要内容区域 */
+        main {
+            padding: 15px;
+        }
+
+        /* 文章卡片 */
+        .article-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .article-card h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .article-card .meta {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .article-card .summary {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* 留言板 */
+        .guestbook-section {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .guestbook-section h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #00c853;
+        }
+
+        .guestbook-form input,
+        .guestbook-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .guestbook-form input:focus,
+        .guestbook-form textarea:focus {
+            border-color: #00c853;
+        }
+
+        .guestbook-form textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .guestbook-submit {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #00c853 0%, #009624 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .guestbook-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 200, 83, 0.3);
+        }
+
+        /* 社交媒体区域 */
+        .social-media-section {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .social-media-section h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #2196f3;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .social-item {
+            text-align: center;
+            padding: 10px 5px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .social-item:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .social-item .icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .social-item span {
+            font-size: 12px;
+            display: block;
+        }
+
+        /* 评论区域 */
+        .comments-section {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .comments-section h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #2196f3;
+        }
+
+        .comment-item {
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .comment-time {
+            color: #999;
+        }
+
+        .comment-body {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* 底部导航 */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            padding: 10px 0;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #666;
+            text-decoration: none;
+            font-size: 11px;
+            padding: 5px;
+            transition: all 0.3s;
+        }
+
+        .nav-item.active {
+            color: #00c853;
+        }
+
+        .nav-item .icon {
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 360px) {
+            header h1 {
+                font-size: 18px;
+            }
+            
+            .social-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header>
+        <h1>福库身心同调</h1>
+        <div class="tagline">推拿艾灸 · 心理咨询 · 系统排列 · 生命整合</div>
+    </header>
+
+    <!-- 分类导航 -->
+    <div class="category-nav">
+        <button class="category-btn active" onclick="filterArticles('all')">全部</button>
+        <button class="category-btn" onclick="filterArticles('body')">身</button>
+        <button class="category-btn" onclick="filterArticles('mind')">心</button>
+        <button class="category-btn" onclick="filterArticles('spirit')">神</button>
+        <button class="category-btn" onclick="filterArticles('partnership')">伴侣关系</button>
+        <button class="category-btn" onclick="filterArticles('ai')">AI</button>
+    </div>
+
+    <!-- 主要内容 -->
+    <main>
+        <!-- 文章列表 -->
+        <div id="article-list">
+            <div class="article-card" data-category="mind">
+                <h3>深度心理治疗案例分享</h3>
+                <div class="meta">
+                    <span>[心]</span>
+                    <span>2024-03-12</span>
+                </div>
+                <div class="summary">
+                    这是一篇付费文章，通过真实的深度心理治疗案例，展示心理咨询如何在帮助个体实现身心神同调的过程中发挥重要作用...
+                </div>
+                
+                <!-- 文章评论区 -->
+                <div class="comments-section">
+                    <h3>💬 文章评论 (2)</h3>
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-author">王女士</span>
+                            <span class="comment-time">2024-03-12 14:30</span>
+                        </div>
+                        <div class="comment-body">这篇文章写得太好了，非常专业的案例分析！</div>
+                    </div>
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-author">李老师</span>
+                            <span class="comment-time">2024-03-11 09:15</span>
+                        </div>
+                        <div class="comment-body">作为心理咨询师，我认为这个案例很有参考价值，感谢分享。</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="article-card" data-category="body">
+                <h3>艾灸的温暖疗愈</h3>
+                <div class="meta">
+                    <span>[身]</span>
+                    <span>2024-01-20</span>
+                </div>
+                <div class="summary">
+                    艾灸，作为中国传统医学的重要组成部分，通过艾草燃烧产生的热力和药力，作用于人体的经络和穴位...
+                </div>
+            </div>
+
+            <div class="article-card" data-category="ai">
+                <h3>AI在心理咨询中的辅助作用</h3>
+                <div class="meta">
+                    <span>[AI]</span>
+                    <span>2024-01-19</span>
+                </div>
+                <div class="summary">
+                    人工智能（AI）正在改变各行各业，心理咨询领域也不例外。虽然AI无法替代人类咨询师的深度理解和共情...
+                </div>
+            </div>
+
+            <div class="article-card" data-category="partnership">
+                <h3>伴侣关系中的沟通艺术</h3>
+                <div class="meta">
+                    <span>[伴侣关系]</span>
+                    <span>2024-01-18</span>
+                </div>
+                <div class="summary">
+                    伴侣关系是人生中最重要的人际关系之一。良好的沟通是维系健康伴侣关系的关键...
+                </div>
+            </div>
+
+            <div class="article-card" data-category="spirit">
+                <h3>意识与生命整合的探索</h3>
+                <div class="meta">
+                    <span>[神]</span>
+                    <span>2024-01-17</span>
+                </div>
+                <div class="summary">
+                    意识与生命整合，是身心神同调理论中的核心概念。威利·内勒斯在其"生命整合程序"中...
+                </div>
+            </div>
+        </div>
+
+        <!-- 留言板 -->
+        <div class="guestbook-section">
+            <h3>📝 留言板</h3>
+            <div class="guestbook-form">
+                <input type="text" id="guestbook-name" placeholder="您的称呼">
+                <textarea id="guestbook-message" placeholder="请输入您的留言..."></textarea>
+                <button class="guestbook-submit" onclick="submitGuestbook()">提交留言</button>
+            </div>
+            <div id="guestbook-messages">
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="comment-author">张先生</span>
+                        <span class="comment-time">2024-03-12</span>
+                    </div>
+                    <div class="comment-body">心理咨询真的很有帮助，感谢福库老师的分享！</div>
+                </div>
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="comment-author">李女士</span>
+                        <span class="comment-time">2024-03-11</span>
+                    </div>
+                    <div class="comment-body">文章内容很专业，学到了很多关于身心同调的知识。</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 社交媒体 -->
+        <div class="social-media-section">
+            <h3>📱 关注我们</h3>
+            <div class="social-grid">
+                <a href="#" class="social-item">
+                    <div class="icon">📱</div>
+                    <span>微信公众号</span>
+                </a>
+                <a href="#" class="social-item">
+                    <div class="icon">▶</div>
+                    <span>视频号</span>
+                </a>
+                <a href="#" class="social-item">
+                    <div class="icon">B</div>
+                    <span>B站</span>
+                </a>
+                <a href="#" class="social-item">
+                    <div class="icon">🔴</div>
+                    <span>小红书</span>
+                </a>
+                <a href="#" class="social-item">
+                    <div class="icon">♪</div>
+                    <span>抖音</span>
+                </a>
+                <a href="#" class="social-item">
+                    <div class="icon">⚡</div>
+                    <span>今日头条</span>
+                </a>
+                <a href="#" class="social-item">
+                    <div class="icon">W</div>
+                    <span>微博</span>
+                </a>
+                <a href="#" class="social-item">
+                    <div class="icon">★</div>
+                    <span>知识星球</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- 底部导航 -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <div class="icon">🏠</div>
+            <span>首页</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="icon">📚</div>
+            <span>文章</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="icon">💬</div>
+            <span>留言</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="icon">👤</div>
+            <span>我的</span>
+        </a>
+    </div>
+
+    <script>
+        // 文章筛选功能
+        function filterArticles(category) {
+            const articles = document.querySelectorAll('.article-card');
+            const buttons = document.querySelectorAll('.category-btn');
+            
+            // 更新按钮状态
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // 筛选文章
+            articles.forEach(article => {
+                if (category === 'all' || article.dataset.category === category) {
+                    article.style.display = 'block';
+                } else {
+                    article.style.display = 'none';
+                }
+            });
+        }
+
+        // 留言板功能
+        function submitGuestbook() {
+            const nameInput = document.getElementById('guestbook-name');
+            const messageInput = document.getElementById('guestbook-message');
+            const messagesContainer = document.getElementById('guestbook-messages');
+
+            const name = nameInput.value.trim();
+            const message = messageInput.value.trim();
+
+            if (!name || !message) {
+                alert('请填写称呼和留言内容');
+                return;
+            }
+
+            // 创建新留言
+            const now = new Date();
+            const dateStr = now.getFullYear() + '-' +
+                           String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                           String(now.getDate()).padStart(2, '0');
+
+            const newMessage = document.createElement('div');
+            newMessage.className = 'comment-item';
+            newMessage.innerHTML = `
+                <div class="comment-header">
+                    <span class="comment-author">${name}</span>
+                    <span class="comment-time">${dateStr}</span>
+                </div>
+                <div class="comment-body">${message}</div>
+            `;
+
+            // 添加到留言列表顶部
+            messagesContainer.insertBefore(newMessage, messagesContainer.firstChild);
+
+            // 清空输入框
+            nameInput.value = '';
+            messageInput.value = '';
+
+            alert('留言提交成功！');
+        }
+
+        // 注册Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(reg => console.log('Service Worker registered'))
+                .catch(err => console.log('Service Worker registration failed'));
+        }
+    </script>
+</body>
+</html>
