@@ -506,7 +506,7 @@
                 summary: '存在主义心理治疗，由欧文·亚隆系统阐述，是现代心理咨询的重要流派之一。',
                 date: '2024-01-16',
                 isPremium: false,
-                price: '9.9元',
+                price: '',
                 tags: ['存在主义', '心理咨询', '欧文·亚隆'],
                 series: '心理咨询系列',
                 url: 'https://jinfuku.github.io/fukuxinli/mind/%E5%AD%98%E5%9C%A8%E4%B8%BB%E4%B9%89%E5%BF%83%E7%90%86%E6%B2%BB%E7%96%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/'
@@ -531,7 +531,7 @@
                 summary: '意识与生命整合，是身心神同调理论中的核心概念。威尔菲德·内勒斯提供了理解和发展意识的框架。',
                 date: '2024-01-17',
                 isPremium: false,
-                price: '9.9元',
+                price: '',
                 tags: ['意识', '生命整合', '威尔菲德·内勒斯', '心灵'],
                 series: '内勒斯理论系列',
                 url: 'https://jinfuku.github.io/fukuxinli/spirit/%E6%84%8F%E8%AF%86%E4%B8%8E%E7%94%9F%E5%91%BD%E6%95%B4%E5%90%88%E7%9A%84%E6%8E%A2%E7%B4%A2/'
@@ -556,7 +556,7 @@
                 summary: '良好的沟通是维系健康伴侣关系的关键，它不仅仅是信息的传递，更是情感的交流和理解的深化。',
                 date: '2024-01-18',
                 isPremium: false,
-                price: '9.9元',
+                price: '',
                 tags: ['伴侣关系', '沟通', '心理学', '关系'],
                 series: '关系系列',
                 url: 'https://jinfuku.github.io/fukuxinli/partnership/%E4%BC%B4%E4%BE%A3%E5%85%B3%E7%B3%BB%E4%B8%AD%E7%9A%84%E6%B2%9F%E9%80%9A%E8%89%BA%E6%9C%AF/'
@@ -568,7 +568,7 @@
                 summary: '人工智能正在改变各行各业，心理咨询领域也不例外。AI在辅助咨询方面展现出巨大潜力。',
                 date: '2024-01-19',
                 isPremium: false,
-                price: '9.9元',
+                price: '',
                 tags: ['AI', '人工智能', '心理咨询', '科技'],
                 series: '科技与心理系列',
                 url: 'https://jinfuku.github.io/fukuxinli/ai/ai%E5%9C%A8%E5%BF%83%E7%90%86%E5%92%A8%E8%AF%A2%E4%B8%AD%E7%9A%84%E8%BE%85%E5%8A%A9%E4%BD%9C%E7%94%A8/'
@@ -662,7 +662,7 @@
                     </div>
                     <div class="article-meta">
                         <span class="article-date">${article.date}</span>
-                        <span class="article-price">${article.price || ''}</span>
+                        <span class="article-price">${article.isPremium && article.price ? article.price : ''}</span>
                         ${article.isSeries ? '<span class="series-badge">📦 系列</span>' : ''}
                     </div>
                     <div class="article-actions">
@@ -761,7 +761,7 @@
 
         // 分享文章
         function shareArticle(article) {
-            const shareText = `福库心理 - ${article.title}\n\n${article.summary}\n\n价格：${article.price || '免费'}\n\n阅读链接：${article.url || 'https://jinfuku.github.io/fukuxinli/'}`;
+            const shareText = `福库心理 - ${article.title}\n\n${article.summary}${article.isPremium && article.price ? '\n\n价格：' + article.price : ''}\n\n阅读链接：${article.url || 'https://jinfuku.github.io/fukuxinli/'}`;
 
             // 尝试使用Web Share API
             if (navigator.share) {
