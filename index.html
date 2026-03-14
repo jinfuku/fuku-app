@@ -797,7 +797,76 @@
 
         // 显示关于页面
         function showAbout() {
-            alert('福库老师\n\n身心神同调内容架构师\n\n专业领域：\n• 身：推拿、艾灸\n• 心：心理咨询\n• 神：意识、生命整合\n• 伴侣关系\n• AI应用\n\n理念：身心神同调，开启生命的新可能');
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position:fixed;top:0;left:0;right:0;bottom:0;
+                background:rgba(0,0,0,0.55);z-index:9999;
+                display:flex;align-items:center;justify-content:center;
+                padding:20px;
+            `;
+            modal.innerHTML = `
+              <div style="background:white;border-radius:20px;max-width:420px;width:100%;max-height:85vh;overflow-y:auto;padding:0;box-shadow:0 20px 60px rgba(0,0,0,0.25);">
+                <!-- 顶部渐变 -->
+                <div style="background:linear-gradient(135deg,#00c853,#2196f3);padding:28px 24px 20px;border-radius:20px 20px 0 0;color:white;">
+                  <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;">
+                    <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">🌿</div>
+                    <div>
+                      <div style="font-size:20px;font-weight:700;">靳福库（福库老师）</div>
+                      <div style="font-size:13px;opacity:0.9;margin-top:2px;">身心整合疗愈师 · 中国式心理学倡导者</div>
+                    </div>
+                  </div>
+                  <div style="background:rgba(255,255,255,0.15);border-radius:10px;padding:10px 14px;font-size:13px;line-height:1.8;font-style:italic;">
+                    "从心发现生命·生活·生意，三生有幸；<br>身心同调调神·调心·调形，形与神俱。"
+                  </div>
+                </div>
+                <!-- 内容 -->
+                <div style="padding:20px 24px;">
+                  <div style="margin-bottom:18px;">
+                    <div style="font-size:13px;font-weight:700;color:#2196f3;margin-bottom:8px;letter-spacing:0.5px;">📋 专业资质</div>
+                    <div style="font-size:13px;color:#424245;line-height:1.9;">
+                      🖐 推拿按摩师 · 🧠 心理咨询师<br>
+                      🪡 五行针灸师 · 🌀 系统排列师<br>
+                      🌍 德国内勒斯生命整合学院授权导师<br>
+                      📅 心理学16年 · 中医领域15年
+                    </div>
+                  </div>
+                  <div style="margin-bottom:18px;">
+                    <div style="font-size:13px;font-weight:700;color:#2196f3;margin-bottom:8px;letter-spacing:0.5px;">⚖️ 三层整合模式</div>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;font-size:12px;">
+                      <div style="background:#fff3e0;border-radius:10px;padding:10px 6px;">
+                        <div style="font-weight:700;font-size:14px;margin-bottom:4px;">调形</div>
+                        <div style="color:#666;">推拿·针灸·艾灸·正骨</div>
+                      </div>
+                      <div style="background:#e8f5e9;border-radius:10px;padding:10px 6px;">
+                        <div style="font-weight:700;font-size:14px;margin-bottom:4px;">调心</div>
+                        <div style="color:#666;">系统排列·心理咨询</div>
+                      </div>
+                      <div style="background:#e3f2fd;border-radius:10px;padding:10px 6px;">
+                        <div style="font-weight:700;font-size:14px;margin-bottom:4px;">调神</div>
+                        <div style="color:#666;">生命整合·正念·意识</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="margin-bottom:18px;">
+                    <div style="font-size:13px;font-weight:700;color:#2196f3;margin-bottom:8px;letter-spacing:0.5px;">💡 核心理念</div>
+                    <div style="font-size:13px;color:#424245;line-height:1.8;">
+                      · 症状即灵魂语言，读懂身体信号背后的生命深意<br>
+                      · 东西方智慧融合，打造"中国式心理学"实践路径<br>
+                      · 从拯救者到陪伴者，陪伴来访者找到内在力量
+                    </div>
+                  </div>
+                  <div style="margin-bottom:20px;">
+                    <div style="font-size:13px;font-weight:700;color:#2196f3;margin-bottom:8px;letter-spacing:0.5px;">📚 学术传承</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                      ${['欧文·亚隆','伯特·海灵格','威尔菲德·内勒斯','伯图·乌沙莫','五行针灸','黄帝内经'].map(t=>`<span style="background:#e8f5e9;border:1px solid rgba(0,200,83,0.2);color:#1d1d1f;font-size:11px;padding:4px 10px;border-radius:20px;">${t}</span>`).join('')}
+                    </div>
+                  </div>
+                  <button onclick="this.closest('[style*=fixed]').remove()" style="width:100%;background:linear-gradient(135deg,#00c853,#2196f3);color:white;border:none;padding:13px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;">关闭</button>
+                </div>
+              </div>
+            `;
+            modal.addEventListener('click', function(e){ if(e.target===modal) modal.remove(); });
+            document.body.appendChild(modal);
         }
 
         // 显示页面
