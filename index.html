@@ -462,7 +462,7 @@
             <div class="nav-icon">🏠</div>
             <div>首页</div>
         </a>
-        <a href="#" class="nav-item" onclick="showPage('categories')">
+        <a href="#" class="nav-item" onclick="openCategoryDrawer();return false;">
             <div class="nav-icon">📚</div>
             <div>分类</div>
         </a>
@@ -945,8 +945,7 @@
                     renderArticles(articles);
                     break;
                 case 'categories':
-                    // 分类页面
-                    alert('分类功能：\n\n请使用顶部的分类按钮选择您感兴趣的内容类别');
+                    openCategoryDrawer();
                     break;
                 case 'search':
                     // 搜索页面
@@ -1023,6 +1022,32 @@
         }
     </script>
 
+  <!-- 分类弹出菜单遮罩 -->
+  <div id="categoryDrawerMask" onclick="closeCategoryDrawer()" style="display:none;position:fixed;z-index:8888;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.45);"></div>
+
+  <!-- 分类弹出菜单面板 -->
+  <div id="categoryDrawer" style="display:none;position:fixed;z-index:8889;left:0;bottom:0;width:100%;background:white;border-radius:20px 20px 0 0;padding:0 0 env(safe-area-inset-bottom,16px);box-shadow:0 -4px 32px rgba(0,0,0,.15);transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);">
+    <!-- 拖动条 -->
+    <div style="text-align:center;padding:12px 0 4px;">
+      <div style="width:36px;height:4px;background:#e0e0e0;border-radius:2px;display:inline-block;"></div>
+    </div>
+    <!-- 标题 -->
+    <div style="text-align:center;font-size:15px;font-weight:600;color:#1d1d1f;padding:4px 0 14px;">选择内容分类</div>
+    <!-- 分类列表 -->
+    <div id="categoryDrawerList" style="padding:0 16px 20px;display:flex;flex-direction:column;gap:10px;">
+      <button onclick="selectCategoryDrawer('all')" id="drawerBtn-all"   class="drawer-cat-btn drawer-cat-active">🌟 全部内容</button>
+      <button onclick="selectCategoryDrawer('身')"  id="drawerBtn-身"   class="drawer-cat-btn">💆 身（推拿 · 艾灸）</button>
+      <button onclick="selectCategoryDrawer('心')"  id="drawerBtn-心"   class="drawer-cat-btn">🧠 心（心理咨询）</button>
+      <button onclick="selectCategoryDrawer('神')"  id="drawerBtn-神"   class="drawer-cat-btn">✨ 神（意识 · 生命整合）</button>
+      <button onclick="selectCategoryDrawer('伴侣关系')" id="drawerBtn-伴侣关系" class="drawer-cat-btn">💑 伴侣关系</button>
+      <button onclick="selectCategoryDrawer('AI')"  id="drawerBtn-AI"   class="drawer-cat-btn">🤖 AI（人工智能）</button>
+    </div>
+    <!-- 取消按钮 -->
+    <div style="padding:0 16px 16px;">
+      <button onclick="closeCategoryDrawer()" style="width:100%;padding:14px;border:none;border-radius:14px;background:#f2f2f7;font-size:15px;font-weight:500;color:#1d1d1f;cursor:pointer;">取消</button>
+    </div>
+  </div>
+
   <!-- 二维码弹窗 -->
   <div id="appQrModal" onclick="if(event.target===this)this.style.display='none';" style="display:none;position:fixed;z-index:99999;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
     <div style="background:white;border-radius:20px;padding:32px 28px;max-width:320px;width:88%;text-align:center;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.3);">
@@ -1040,6 +1065,87 @@
       document.getElementById('appQrDesc').textContent = desc;
       m.style.display = 'flex';
     }
+
+    /* ===== 分类底部弹出菜单 ===== */
+    var _currentDrawerCat = 'all';
+
+    function openCategoryDrawer() {
+      var mask   = document.getElementById('categoryDrawerMask');
+      var drawer = document.getElementById('categoryDrawer');
+      // 先让元素可见再触发动画
+      mask.style.display = 'block';
+      drawer.style.display = 'block';
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          drawer.style.transform = 'translateY(0)';
+          mask.style.opacity = '1';
+        });
+      });
+      // 高亮当前选中分类
+      document.querySelectorAll('.drawer-cat-btn').forEach(function(b) {
+        b.classList.remove('drawer-cat-active');
+      });
+      var active = document.getElementById('drawerBtn-' + _currentDrawerCat);
+      if (active) active.classList.add('drawer-cat-active');
+    }
+
+    function closeCategoryDrawer() {
+      var drawer = document.getElementById('categoryDrawer');
+      var mask   = document.getElementById('categoryDrawerMask');
+      drawer.style.transform = 'translateY(100%)';
+      setTimeout(function() {
+        drawer.style.display = 'none';
+        mask.style.display = 'none';
+      }, 280);
+    }
+
+    function selectCategoryDrawer(cat) {
+      _currentDrawerCat = cat;
+      closeCategoryDrawer();
+      // 延迟一点，等动画收起后再刷新文章列表
+      setTimeout(function() {
+        // 同步顶部分类按钮高亮
+        document.querySelectorAll('.category-btn').forEach(function(btn) {
+          btn.classList.remove('active');
+          if (btn.getAttribute('onclick') && btn.getAttribute('onclick').indexOf("'" + cat + "'") !== -1) {
+            btn.classList.add('active');
+          }
+        });
+        if (cat === 'all') {
+          // "全部" 特殊处理：第一个按钮
+          document.querySelector('.category-btn').classList.add('active');
+        }
+        currentCategory = cat;
+        renderArticles(articles);
+        // 滚动到文章列表顶部
+        var articlesList = document.getElementById('articlesList');
+        if (articlesList) articlesList.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+    }
   </script>
+  <style>
+    .drawer-cat-btn {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1.5px solid #e5e5e7;
+      border-radius: 14px;
+      background: white;
+      font-size: 15px;
+      font-weight: 500;
+      color: #1d1d1f;
+      cursor: pointer;
+      text-align: left;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .drawer-cat-btn.drawer-cat-active {
+      background: #e8f8ef;
+      border-color: #00c853;
+      color: #00a041;
+      font-weight: 600;
+    }
+    .drawer-cat-btn:active {
+      background: #f0f0f0;
+    }
+  </style>
 </body>
 </html>
