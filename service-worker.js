@@ -1,8 +1,8 @@
 const CACHE_NAME = 'fuku-psychology-v1';
 const urlsToCache = [
-    '/',
-    '/index.html',
-    '/manifest.json'
+    '/fuku-app/',
+    '/fuku-app/index.html',
+    '/fuku-app/manifest.json'
 ];
 
 // 安装Service Worker

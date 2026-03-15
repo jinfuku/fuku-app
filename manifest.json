@@ -2,7 +2,7 @@
   "name": "福库心理 - 身心同调",
   "short_name": "福库心理",
   "description": "身心神同调，开启生命的新可能。专业心理咨询、推拿、艾灸、伴侣关系咨询。",
-  "start_url": "/",
+  "start_url": "/fuku-app/",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#00c853",
@@ -64,5 +64,5 @@
   ],
   "lang": "zh-CN",
   "dir": "ltr",
-  "scope": "/"
+  "scope": "/fuku-app/"
 }
